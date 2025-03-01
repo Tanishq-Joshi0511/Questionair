@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Questionnaire from './components/Questionnaire';
+import Recommendation from './components/Recommendation';
 import './App.css';
 
 function App() {
+  const [answers, setAnswers] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const handleQuestionnaireComplete = (questionnaireAnswers) => {
+    setAnswers(questionnaireAnswers);
+    setIsCompleted(true);
+  };
+
+  const handleBackToQuestionnaire = () => {
+    setIsCompleted(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="app-container">
+        {!isCompleted ? (
+          <Questionnaire onComplete={handleQuestionnaireComplete} initialAnswers={answers} />
+        ) : (
+          <Recommendation answers={answers} onBackClick={handleBackToQuestionnaire} />
+        )}
+      </div>
     </div>
   );
 }
